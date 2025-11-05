@@ -1,4 +1,4 @@
-import { Clock, Settings, Play, BarChart3 } from "lucide-react";
+import { Clock, Settings, Play, BarChart3, Sliders } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const steps = [
@@ -11,7 +11,7 @@ const steps = [
   },
   {
     number: "2",
-    icon: Settings,
+    icon: Sliders,
     title: "Defina Preferências",
     description: "Cargo desejado, faixa salarial e modelo de trabalho.",
     time: "2 minutos"
