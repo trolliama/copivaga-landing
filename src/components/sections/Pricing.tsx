@@ -31,12 +31,18 @@ export const Pricing = () => {
             </div>
 
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-foreground mb-2">Pro</h3>
-              <div className="flex items-baseline gap-2">
-                <span className="text-5xl font-bold text-foreground">R$ 67</span>
-                <span className="text-muted-foreground">/mês</span>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Pro Trimestral</h3>
+              <div className="flex items-baseline gap-3">
+                <span className="text-2xl font-bold text-muted-foreground line-through">R$ 167</span>
+                <span className="text-5xl font-bold text-foreground">R$ 83,50</span>
               </div>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-sm text-muted-foreground mt-1">/a cada 3 meses</p>
+              <div className="inline-flex items-center gap-2 bg-warning/10 border border-warning/20 rounded-full px-4 py-2 mt-3">
+                <span className="text-xs font-semibold text-foreground">
+                  🎁 50% OFF Vitalício - Oferta válida até 31/12
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-3">
                 Para automatizar completamente
               </p>
             </div>
@@ -63,17 +69,6 @@ export const Pricing = () => {
               Sem cartão de crédito • Cancele quando quiser
             </p>
           </Card>
-
-          <div className="mt-8 text-center">
-            <div className="inline-flex items-center gap-2 bg-warning/10 border border-warning/20 rounded-full px-6 py-3">
-              <span className="text-sm font-semibold text-foreground">
-                🎁 Oferta de Lançamento:
-              </span>
-              <span className="text-sm text-foreground">
-                50% OFF nos primeiros 3 meses <span className="font-bold">(R$ 33,50/mês)</span>
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </section>
