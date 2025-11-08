@@ -12,7 +12,7 @@ export const Hero = () => {
           {/* Logo/Brand */}
           <div className="mb-8">
             <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              JobAutomation
+              copivaga
             </h2>
           </div>
 

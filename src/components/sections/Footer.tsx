@@ -84,12 +84,12 @@ export const Footer = () => {
         <div className="pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              JobAutomation
+              copivaga
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
-              <a href="mailto:contato@jobautomation.com" className="hover:text-foreground transition-colors">
-                📧 contato@jobautomation.com
+              <a href="mailto:contato@copivaga.com" className="hover:text-foreground transition-colors">
+                📧 contato@copivaga.com
               </a>
               <span className="hidden sm:inline">•</span>
               <span>💬 Suporte: Chat ao vivo (Seg-Sex, 9h-18h)</span>
@@ -97,7 +97,7 @@ export const Footer = () => {
           </div>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            © 2025 JobAutomation. Todos os direitos reservados.
+            © 2025 copivaga. Todos os direitos reservados.
           </div>
         </div>
       </div>
