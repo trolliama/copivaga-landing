@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, Users, Zap } from "lucide-react";
+import { CheckCircle2, Clock, Users, Zap, Play } from "lucide-react";
 
 export const Hero = () => {
   return (
@@ -46,6 +46,7 @@ export const Hero = () => {
                 variant="outline"
                 className="px-8 py-6 text-lg font-semibold"
               >
+                <Play className="mr-2 h-5 w-5" />
                 Ver Demo
               </Button>
             </div>
