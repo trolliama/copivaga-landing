@@ -32,15 +32,24 @@ export const Hero = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
-            >
-              <Zap className="mr-2 h-5 w-5" />
-              Começar Gratuitamente
-            </Button>
-            <p className="text-sm text-muted-foreground">
+          <div className="flex flex-col gap-4 justify-center items-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Zap className="mr-2 h-5 w-5" />
+                Começar Gratuitamente
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="px-8 py-6 text-lg font-semibold"
+              >
+                Ver Demo
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground text-center">
               Sem cartão de crédito • Setup em 5 minutos
             </p>
           </div>
