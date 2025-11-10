@@ -1,1 +1,4 @@
 project_id = "zuymqhqsyhxmhqgeziye"
+
+[functions.submit-trial-signup]
+verify_jwt = false

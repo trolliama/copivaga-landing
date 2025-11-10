@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { supabase } from "@/integrations/supabase/client";
 
 const features = [
   "Vagas ilimitadas",
@@ -47,8 +48,15 @@ export const Pricing = () => {
 
   const onSubmit = async (data: TrialFormData) => {
     try {
-      // TODO: Integrar com backend para salvar os dados
-      console.log("Trial signup:", data);
+      const { error } = await supabase.functions.invoke('submit-trial-signup', {
+        body: {
+          fullName: data.fullName,
+          email: data.email,
+          whatsapp: data.whatsapp
+        }
+      });
+
+      if (error) throw error;
       
       toast({
         title: "Cadastro realizado!",
@@ -58,6 +66,7 @@ export const Pricing = () => {
       setIsModalOpen(false);
       reset();
     } catch (error) {
+      console.error("Error submitting trial signup:", error);
       toast({
         title: "Erro ao cadastrar",
         description: "Tente novamente mais tarde.",
