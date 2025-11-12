@@ -23,28 +23,66 @@ const features = [
 const trialSchema = z.object({
   fullName: z.string()
     .trim()
-    .min(3, { message: "Nome deve ter pelo menos 3 caracteres" })
-    .max(100, { message: "Nome deve ter no máximo 100 caracteres" }),
+    .min(3, { message: "Nome muito curto" })
+    .max(100, { message: "Nome muito longo" })
+    .regex(/^[a-zA-ZÀ-ÿ\s]+$/, { message: "Nome deve conter apenas letras" })
+    .refine((val) => val.split(' ').filter(n => n.length > 0).length >= 2, {
+      message: "Digite nome e sobrenome completos"
+    }),
   email: z.string()
     .trim()
-    .email({ message: "Email inválido" })
-    .max(255, { message: "Email deve ter no máximo 255 caracteres" }),
+    .min(1, { message: "Email é obrigatório" })
+    .email({ message: "Digite um email válido" })
+    .max(255, { message: "Email muito longo" })
+    .toLowerCase(),
   whatsapp: z.string()
     .trim()
-    .min(10, { message: "WhatsApp deve ter pelo menos 10 dígitos" })
-    .max(20, { message: "WhatsApp deve ter no máximo 20 caracteres" })
-    .regex(/^[\d\s\(\)\-\+]+$/, { message: "WhatsApp deve conter apenas números e símbolos válidos" })
+    .min(1, { message: "WhatsApp é obrigatório" })
+    .transform((val) => val.replace(/\D/g, ''))
+    .refine((val) => val.length >= 10 && val.length <= 11, {
+      message: "Número inválido. Use DDD + 8 ou 9 dígitos"
+    })
+    .refine((val) => {
+      if (val.length === 11) {
+        return val[2] === '9';
+      }
+      return true;
+    }, {
+      message: "Celular deve começar com 9"
+    })
 });
 
 type TrialFormData = z.infer<typeof trialSchema>;
 
 export const Pricing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [phoneValue, setPhoneValue] = useState("");
   const { toast } = useToast();
   
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<TrialFormData>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue } = useForm<TrialFormData>({
     resolver: zodResolver(trialSchema)
   });
+
+  const formatPhoneNumber = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
+    
+    if (numbers.length <= 2) {
+      return numbers;
+    }
+    if (numbers.length <= 7) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+    }
+    if (numbers.length <= 11) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+    }
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhoneValue(formatted);
+    setValue('whatsapp', e.target.value.replace(/\D/g, ''), { shouldValidate: true });
+  };
 
   const onSubmit = async (data: TrialFormData) => {
     try {
@@ -65,6 +103,7 @@ export const Pricing = () => {
       
       setIsModalOpen(false);
       reset();
+      setPhoneValue("");
     } catch (error) {
       console.error("Error submitting trial signup:", error);
       toast({
@@ -180,7 +219,9 @@ export const Pricing = () => {
               <Input
                 id="whatsapp"
                 placeholder="(11) 98765-4321"
-                {...register("whatsapp")}
+                value={phoneValue}
+                onChange={handlePhoneChange}
+                maxLength={15}
                 className={errors.whatsapp ? "border-destructive" : ""}
               />
               {errors.whatsapp && (
