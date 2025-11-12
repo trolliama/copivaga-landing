@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      quiz_responses: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          span: string
+          trial_signup_id: string
+          updated_at: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          span: string
+          trial_signup_id: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          span?: string
+          trial_signup_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_responses_trial_signup_id_fkey"
+            columns: ["trial_signup_id"]
+            isOneToOne: false
+            referencedRelation: "trial_signups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trial_signups: {
         Row: {
           created_at: string
