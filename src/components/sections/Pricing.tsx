@@ -86,7 +86,7 @@ export const Pricing = () => {
 
   const onSubmit = async (data: TrialFormData) => {
     try {
-      const { error } = await supabase.functions.invoke('submit-trial-signup', {
+      const { data: responseData, error } = await supabase.functions.invoke('submit-trial-signup', {
         body: {
           fullName: data.fullName,
           email: data.email,
@@ -95,15 +95,23 @@ export const Pricing = () => {
       });
 
       if (error) throw error;
+
+      // Store trial_signup_id for quiz
+      if (responseData?.data?.id) {
+        localStorage.setItem("trial_signup_id", responseData.data.id);
+      }
       
       toast({
         title: "Cadastro realizado!",
-        description: "Em breve você receberá as instruções para começar seu teste gratuito.",
+        description: "Agora vamos conhecer melhor você.",
       });
       
       setIsModalOpen(false);
       reset();
       setPhoneValue("");
+
+      // Navigate to quiz
+      window.location.href = "/quiz";
     } catch (error) {
       console.error("Error submitting trial signup:", error);
       toast({
