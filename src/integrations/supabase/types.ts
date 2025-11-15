@@ -52,7 +52,6 @@ export type Database = {
       trial_signups: {
         Row: {
           created_at: string
-          date_of_birth: string
           email: string
           full_name: string
           id: string
@@ -60,7 +59,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          date_of_birth: string
           email: string
           full_name: string
           id?: string
@@ -68,7 +66,6 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          date_of_birth?: string
           email?: string
           full_name?: string
           id?: string
