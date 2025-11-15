@@ -9,6 +9,7 @@ interface TrialSignupData {
   fullName: string;
   email: string;
   whatsapp: string;
+  dateOfBirth: string;
 }
 
 Deno.serve(async (req) => {
@@ -20,7 +21,7 @@ Deno.serve(async (req) => {
   try {
     console.log('Processing trial signup request');
 
-    const { fullName, email, whatsapp }: TrialSignupData = await req.json();
+    const { fullName, email, whatsapp, dateOfBirth }: TrialSignupData = await req.json();
 
     // Validate input
     if (!fullName || fullName.trim().length < 3 || fullName.trim().length > 100) {
@@ -47,6 +48,14 @@ Deno.serve(async (req) => {
       );
     }
 
+    if (!dateOfBirth || !dateOfBirth.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      console.error('Invalid dateOfBirth:', dateOfBirth);
+      return new Response(
+        JSON.stringify({ error: 'Data de nascimento inválida' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Create Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -59,6 +68,7 @@ Deno.serve(async (req) => {
         full_name: fullName.trim(),
         email: email.trim().toLowerCase(),
         whatsapp: whatsapp.trim(),
+        date_of_birth: dateOfBirth,
       })
       .select()
       .single();
