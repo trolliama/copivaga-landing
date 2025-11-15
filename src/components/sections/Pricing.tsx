@@ -4,12 +4,16 @@ import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Check, Star } from "lucide-react";
+import { Check, Star, CalendarIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const features = [
   "Vagas ilimitadas",
@@ -49,6 +53,17 @@ const trialSchema = z.object({
       return true;
     }, {
       message: "Celular deve começar com 9"
+    }),
+  dateOfBirth: z.date({
+    required_error: "Data de nascimento é obrigatória",
+    invalid_type_error: "Data inválida"
+  })
+    .refine((date) => {
+      const today = new Date();
+      const age = today.getFullYear() - date.getFullYear();
+      return age >= 16 && age <= 100;
+    }, {
+      message: "Você deve ter entre 16 e 100 anos"
     })
 });
 
@@ -59,7 +74,7 @@ export const Pricing = () => {
   const [phoneValue, setPhoneValue] = useState("");
   const { toast } = useToast();
   
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue } = useForm<TrialFormData>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue, control } = useForm<TrialFormData>({
     resolver: zodResolver(trialSchema)
   });
 
@@ -90,7 +105,8 @@ export const Pricing = () => {
         body: {
           fullName: data.fullName,
           email: data.email,
-          whatsapp: data.whatsapp
+          whatsapp: data.whatsapp,
+          dateOfBirth: format(data.dateOfBirth, 'yyyy-MM-dd')
         }
       });
 
@@ -234,6 +250,45 @@ export const Pricing = () => {
               />
               {errors.whatsapp && (
                 <p className="text-sm text-destructive">{errors.whatsapp.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="dateOfBirth">Data de Nascimento *</Label>
+              <Controller
+                control={control}
+                name="dateOfBirth"
+                render={({ field }) => (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? format(field.value, "dd/MM/yyyy") : <span>Selecione a data</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                )}
+              />
+              {errors.dateOfBirth && (
+                <p className="text-sm text-destructive">{errors.dateOfBirth.message}</p>
               )}
             </div>
 
