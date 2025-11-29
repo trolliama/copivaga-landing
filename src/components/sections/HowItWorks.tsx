@@ -6,30 +6,31 @@ const steps = [
     number: "1",
     icon: Settings,
     title: "Configure Uma Vez",
-    description: "Faça upload do seu currículo. Nossa IA extrai automaticamente experiências, formação e habilidades.",
-    time: "3 minutos"
+    description:
+      "Faça upload do seu currículo. Nossa IA extrai automaticamente experiências, formação e habilidades.",
+    time: "3 minutos",
   },
   {
     number: "2",
     icon: Sliders,
     title: "Defina Preferências",
     description: "Cargo desejado, faixa salarial e modelo de trabalho.",
-    time: "2 minutos"
+    time: "2 minutos",
   },
   {
     number: "3",
     icon: Play,
     title: "Ative o Piloto Automático",
     description: "A IA assume a busca e aplicação em múltiplas plataformas.",
-    time: "1 clique"
+    time: "1 clique",
   },
   {
     number: "4",
     icon: BarChart3,
     title: "Acompanhe Resultados",
     description: "Dashboard centralizado com todas as candidaturas e status.",
-    time: "5-10 min/semana"
-  }
+    time: "5-10 min/semana",
+  },
 ];
 
 export const HowItWorks = () => {
@@ -43,13 +44,13 @@ export const HowItWorks = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {steps.map((step, index) => (
-              <div key={index} className="relative">
+              <div key={index} className="relative flex">
                 {/* Connection line */}
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-border -translate-x-1/2" />
                 )}
-                
-                <div className="relative bg-card rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-border">
+
+                <div className="relative bg-card rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-border w-full flex flex-col">
                   {/* Step number badge */}
                   <div className="absolute -top-4 left-6 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">
                     {step.number}
@@ -63,11 +64,11 @@ export const HowItWorks = () => {
                     {step.title}
                   </h3>
 
-                  <p className="text-muted-foreground text-sm mb-4">
+                  <p className="text-muted-foreground text-sm mb-4 flex-grow">
                     {step.description}
                   </p>
 
-                  <div className="flex items-center gap-2 text-sm font-medium text-secondary">
+                  <div className="flex items-center gap-2 text-sm font-medium text-secondary mt-auto">
                     <Clock className="h-4 w-4" />
                     {step.time}
                   </div>
@@ -77,7 +78,11 @@ export const HowItWorks = () => {
           </div>
 
           <div className="text-center">
-            <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            >
               Ver Demo Interativa
             </Button>
           </div>

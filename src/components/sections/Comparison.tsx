@@ -7,56 +7,59 @@ const comparisonData = [
     ours: "10 min",
     manual: "10-15h",
     linkedin: "8-12h",
-    coach: "5-8h"
+    coach: "5-8h",
   },
   {
     feature: "Busca multi-plataforma",
     ours: "check",
     manual: "x",
     linkedin: "warning",
-    coach: "x"
+    coach: "x",
   },
   {
     feature: "Personalização de CV",
     ours: "check",
     manual: "x",
     linkedin: "x",
-    coach: "warning"
+    coach: "warning",
   },
   {
     feature: "Otimização ATS",
     ours: "check",
     manual: "x",
     linkedin: "x",
-    coach: "warning"
+    coach: "warning",
   },
   {
     feature: "Aplicação automática",
     ours: "check",
     manual: "x",
     linkedin: "x",
-    coach: "x"
+    coach: "x",
   },
   {
     feature: "Tracking centralizado",
     ours: "check",
     manual: "warning",
     linkedin: "warning",
-    coach: "x"
+    coach: "x",
   },
   {
     feature: "Investimento",
-    ours: "R$ 67/mês",
-    manual: "Grátis",
+    ours: "R$ 29,00/mês",
+    manual: "15h da sua semana",
     linkedin: "R$ 99/mês",
-    coach: "R$ 500-2.000"
-  }
+    coach: "R$ 500-2.000",
+  },
 ];
 
 const getIcon = (value: string) => {
-  if (value === "check") return <Check className="h-5 w-5 text-success mx-auto" />;
-  if (value === "x") return <X className="h-5 w-5 text-muted-foreground/40 mx-auto" />;
-  if (value === "warning") return <AlertTriangle className="h-5 w-5 text-warning mx-auto" />;
+  if (value === "check")
+    return <Check className="h-5 w-5 text-success mx-auto" />;
+  if (value === "x")
+    return <X className="h-5 w-5 text-muted-foreground/40 mx-auto" />;
+  if (value === "warning")
+    return <AlertTriangle className="h-5 w-5 text-warning mx-auto" />;
   return <span className="text-sm text-center block">{value}</span>;
 };
 
@@ -96,22 +99,19 @@ export const Comparison = () => {
                 </thead>
                 <tbody>
                   {comparisonData.map((row, index) => (
-                    <tr key={index} className="border-b border-border hover:bg-muted/30 transition-colors">
+                    <tr
+                      key={index}
+                      className="border-b border-border hover:bg-muted/30 transition-colors"
+                    >
                       <td className="py-4 px-6 text-sm font-medium text-foreground">
                         {row.feature}
                       </td>
                       <td className="py-4 px-6 bg-primary/5">
                         {getIcon(row.ours)}
                       </td>
-                      <td className="py-4 px-6">
-                        {getIcon(row.manual)}
-                      </td>
-                      <td className="py-4 px-6">
-                        {getIcon(row.linkedin)}
-                      </td>
-                      <td className="py-4 px-6">
-                        {getIcon(row.coach)}
-                      </td>
+                      <td className="py-4 px-6">{getIcon(row.manual)}</td>
+                      <td className="py-4 px-6">{getIcon(row.linkedin)}</td>
+                      <td className="py-4 px-6">{getIcon(row.coach)}</td>
                     </tr>
                   ))}
                 </tbody>

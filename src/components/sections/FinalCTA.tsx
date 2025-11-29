@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Calendar, MessageCircle, Zap } from "lucide-react";
+import { MessageCircle, Zap } from "lucide-react";
 
 export const FinalCTA = () => {
   return (
@@ -40,14 +40,7 @@ export const FinalCTA = () => {
             <p className="text-white/90 mb-6 font-medium">
               Ainda tem dúvidas?
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="outline" 
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                Agendar Demo de 15min
-              </Button>
+            <div className="flex justify-center">
               <Button 
                 variant="outline"
                 className="bg-white/10 border-white/30 text-white hover:bg-white/20"

@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, Star } from "lucide-react";
@@ -13,43 +19,50 @@ import { supabase } from "@/integrations/supabase/client";
 
 const features = [
   "Vagas ilimitadas",
-  "Aplicações ilimitadas",
-  "Piloto Automático",
+  "50 Aplicações automáticas por dia",
+  "Análise de currículo e LinkedIn",
   "Personalização de CV por vaga",
-  "Tracking completo",
-  "Suporte prioritário"
+  "Otimização para ATS",
+  "Tracking de suas aplicações completo e automático",
+  "Suporte prioritário no whatsapp",
 ];
 
 const trialSchema = z.object({
-  fullName: z.string()
+  fullName: z
+    .string()
     .trim()
     .min(3, { message: "Nome muito curto" })
     .max(100, { message: "Nome muito longo" })
     .regex(/^[a-zA-ZÀ-ÿ\s]+$/, { message: "Nome deve conter apenas letras" })
-    .refine((val) => val.split(' ').filter(n => n.length > 0).length >= 2, {
-      message: "Digite nome e sobrenome completos"
+    .refine((val) => val.split(" ").filter((n) => n.length > 0).length >= 2, {
+      message: "Digite nome e sobrenome completos",
     }),
-  email: z.string()
+  email: z
+    .string()
     .trim()
     .min(1, { message: "Email é obrigatório" })
     .email({ message: "Digite um email válido" })
     .max(255, { message: "Email muito longo" })
     .toLowerCase(),
-  whatsapp: z.string()
+  whatsapp: z
+    .string()
     .trim()
     .min(1, { message: "WhatsApp é obrigatório" })
-    .transform((val) => val.replace(/\D/g, ''))
+    .transform((val) => val.replace(/\D/g, ""))
     .refine((val) => val.length >= 10 && val.length <= 11, {
-      message: "Número inválido. Use DDD + 8 ou 9 dígitos"
+      message: "Número inválido. Use DDD + 8 ou 9 dígitos",
     })
-    .refine((val) => {
-      if (val.length === 11) {
-        return val[2] === '9';
+    .refine(
+      (val) => {
+        if (val.length === 11) {
+          return val[2] === "9";
+        }
+        return true;
+      },
+      {
+        message: "Celular deve começar com 9",
       }
-      return true;
-    }, {
-      message: "Celular deve começar com 9"
-    })
+    ),
 });
 
 type TrialFormData = z.infer<typeof trialSchema>;
@@ -58,14 +71,20 @@ export const Pricing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [phoneValue, setPhoneValue] = useState("");
   const { toast } = useToast();
-  
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, setValue } = useForm<TrialFormData>({
-    resolver: zodResolver(trialSchema)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setValue,
+  } = useForm<TrialFormData>({
+    resolver: zodResolver(trialSchema),
   });
 
   const formatPhoneNumber = (value: string) => {
-    const numbers = value.replace(/\D/g, '');
-    
+    const numbers = value.replace(/\D/g, "");
+
     if (numbers.length <= 2) {
       return numbers;
     }
@@ -73,26 +92,36 @@ export const Pricing = () => {
       return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
     }
     if (numbers.length <= 11) {
-      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(
+        7
+      )}`;
     }
-    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(
+      7,
+      11
+    )}`;
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
     setPhoneValue(formatted);
-    setValue('whatsapp', e.target.value.replace(/\D/g, ''), { shouldValidate: true });
+    setValue("whatsapp", e.target.value.replace(/\D/g, ""), {
+      shouldValidate: true,
+    });
   };
 
   const onSubmit = async (data: TrialFormData) => {
     try {
-      const { data: responseData, error } = await supabase.functions.invoke('submit-trial-signup', {
-        body: {
-          fullName: data.fullName,
-          email: data.email,
-          whatsapp: data.whatsapp
+      const { data: responseData, error } = await supabase.functions.invoke(
+        "submit-trial-signup",
+        {
+          body: {
+            fullName: data.fullName,
+            email: data.email,
+            whatsapp: data.whatsapp,
+          },
         }
-      });
+      );
 
       if (error) throw error;
 
@@ -100,12 +129,12 @@ export const Pricing = () => {
       if (responseData?.data?.id) {
         localStorage.setItem("trial_signup_id", responseData.data.id);
       }
-      
+
       toast({
         title: "Cadastro realizado!",
         description: "Agora vamos conhecer melhor você.",
       });
-      
+
       setIsModalOpen(false);
       reset();
       setPhoneValue("");
@@ -117,7 +146,7 @@ export const Pricing = () => {
       toast({
         title: "Erro ao cadastrar",
         description: "Tente novamente mais tarde.",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   };
@@ -140,27 +169,34 @@ export const Pricing = () => {
             </div>
 
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-foreground mb-2">Pro Trimestral</h3>
-              <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-bold text-muted-foreground line-through">R$ 167</span>
-                <span className="text-5xl font-bold text-foreground">R$ 83,50</span>
+              <h3 className="text-2xl font-bold text-foreground mb-2">
+                Pro Trimestral
+              </h3>
+              <div className="flex items-end gap-3 flex-wrap">
+                <span className="text-2xl font-bold text-muted-foreground line-through">
+                  R$ 174
+                </span>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-5xl font-bold text-foreground">
+                    R$ 87
+                  </span>
+                  <span className="text-sm text-muted-foreground mb-2">
+                    /3 meses
+                  </span>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground mt-1">/a cada 3 meses</p>
-              <p className="text-sm font-medium text-foreground mt-1">ou 3x de R$ 27,83 sem juros</p>
+              <p className="inline-flex items-center gap-2 text-base font-semibold text-primary mt-2 px-3 py-1 bg-primary/10 rounded-full">
+                <span>✨</span>
+                <span>ou 3x de R$ 29 sem juros</span>
+              </p>
               <div className="inline-flex items-center gap-2 bg-warning/10 border border-warning/20 rounded-full px-4 py-2 mt-3">
                 <span className="text-xs font-semibold text-foreground">
-                  🎁 50% OFF Vitalício - Oferta válida até 31/12
+                  🎁 50% OFF - Oferta válida até 31/12
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground mt-3">
-                Para automatizar completamente
-              </p>
             </div>
 
             <div className="mb-8">
-              <p className="text-sm font-medium text-muted-foreground mb-4">
-                ✓ Tudo do Gratuito, mais:
-              </p>
               <ul className="space-y-3">
                 {features.map((feature, index) => (
                   <li key={index} className="flex items-center gap-3">
@@ -171,7 +207,7 @@ export const Pricing = () => {
               </ul>
             </div>
 
-            <Button 
+            <Button
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg py-6"
               onClick={() => setIsModalOpen(true)}
             >
@@ -188,12 +224,14 @@ export const Pricing = () => {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Comece seu teste grátis</DialogTitle>
+            <DialogTitle className="text-2xl">
+              Comece seu teste grátis
+            </DialogTitle>
             <DialogDescription>
               14 dias de acesso completo, sem cartão de crédito
             </DialogDescription>
           </DialogHeader>
-          
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
             <div className="space-y-2">
               <Label htmlFor="fullName">Nome e Sobrenome</Label>
@@ -204,7 +242,9 @@ export const Pricing = () => {
                 className={errors.fullName ? "border-destructive" : ""}
               />
               {errors.fullName && (
-                <p className="text-sm text-destructive">{errors.fullName.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.fullName.message}
+                </p>
               )}
             </div>
 
@@ -218,7 +258,9 @@ export const Pricing = () => {
                 className={errors.email ? "border-destructive" : ""}
               />
               {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -233,15 +275,13 @@ export const Pricing = () => {
                 className={errors.whatsapp ? "border-destructive" : ""}
               />
               {errors.whatsapp && (
-                <p className="text-sm text-destructive">{errors.whatsapp.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.whatsapp.message}
+                </p>
               )}
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isSubmitting}
-            >
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Enviando..." : "Iniciar Teste Grátis"}
             </Button>
           </form>
