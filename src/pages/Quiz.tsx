@@ -449,6 +449,15 @@ const Quiz = () => {
                         Estudante buscando primeiro emprego
                       </Label>
                     </div>
+                    <div className="flex items-center space-x-3 p-4 rounded-lg border hover:bg-accent/50 transition-colors cursor-pointer">
+                      <RadioGroupItem
+                        value="Não estou procurando emprego no momento"
+                        id="sit5"
+                      />
+                      <Label htmlFor="sit5" className="flex-1 cursor-pointer">
+                        Não estou procurando emprego no momento
+                      </Label>
+                    </div>
                   </RadioGroup>
                 </div>
 
@@ -616,6 +625,15 @@ const Quiz = () => {
                       />
                       <Label htmlFor="frust5" className="flex-1 cursor-pointer">
                         Não encontro vagas compatíveis
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-3 p-4 rounded-lg border hover:bg-accent/50 transition-colors cursor-pointer">
+                      <RadioGroupItem
+                        value="Não tenho frustrações"
+                        id="frust6"
+                      />
+                      <Label htmlFor="frust6" className="flex-1 cursor-pointer">
+                        Não tenho frustrações
                       </Label>
                     </div>
                   </RadioGroup>
