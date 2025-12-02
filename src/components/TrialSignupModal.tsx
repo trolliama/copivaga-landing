@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -64,6 +65,7 @@ export const TrialSignupModal = ({
   open,
   onOpenChange,
 }: TrialSignupModalProps) => {
+  const navigate = useNavigate();
   const [phoneValue, setPhoneValue] = useState("");
   const { toast } = useToast();
 
@@ -138,7 +140,7 @@ export const TrialSignupModal = ({
       setPhoneValue("");
 
       // Navigate to quiz
-      window.location.href = "/quiz";
+      navigate("/quiz");
     } catch (error) {
       console.error("Error submitting trial signup:", error);
       toast({

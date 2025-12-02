@@ -10,7 +10,7 @@ export const FinalCTA = () => {
   return (
     <section className="py-20 bg-gradient-primary relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-3xl mx-auto text-center">

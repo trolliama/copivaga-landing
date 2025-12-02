@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
+import { BASE_URL } from "@/lib/constants";
 
 const features = [
   {
@@ -24,7 +25,7 @@ const features = [
       "Feed único ranqueado pelos melhores matches",
       "Atualização automática de novas vagas",
     ],
-    image: "/images/job-search-feed.png",
+    image: `${BASE_URL}images/job-search-feed.png`,
   },
   {
     icon: Bot,
@@ -39,7 +40,7 @@ const features = [
       "Entenda exatamente como o robô enxerga seu currículo",
       "Baixe uma versão melhorada do seu currículo (PDF e Word)",
     ],
-    image: "/images/cv-optimization.png",
+    image: `${BASE_URL}images/cv-optimization.png`,
   },
   {
     icon: Sparkles,
@@ -53,7 +54,7 @@ const features = [
       "Experiências ordenadas por relevância",
       "Pré-visualização e aprovação do currículo",
     ],
-    image: "/images/cv-personalized-v2.png",
+    image: `${BASE_URL}images/cv-personalized-v2.png`,
   },
   {
     icon: LineChart,
@@ -67,7 +68,7 @@ const features = [
       "Impacto de cada ação em pontos de visibilidade",
       "Análise de foto, headline, sobre, experiências e skills",
     ],
-    image: "/images/linkedin-analytics.png",
+    image: `${BASE_URL}images/linkedin-analytics.png`,
   },
   {
     icon: Rocket,
@@ -81,7 +82,7 @@ const features = [
       "Currículo é customizado automaticamente para cada candidatura",
       "Relatório diário das vagas aplicadas e próximos passos",
     ],
-    image: "/images/auto-pilot.png",
+    image: `${BASE_URL}images/auto-pilot.png`,
   },
   {
     icon: Kanban,
@@ -96,7 +97,7 @@ const features = [
       "Métricas de performance para acompanhar seu progresso",
       "Registro automático das candidaturas pela nossa IA",
     ],
-    image: "/images/kanban-dashboard.png",
+    image: `${BASE_URL}images/kanban-dashboard.png`,
   },
 ];
 

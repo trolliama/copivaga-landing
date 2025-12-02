@@ -1,17 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Clock, Users, Zap } from "lucide-react";
+import { BASE_URL } from "@/lib/constants";
 
 export const Hero = () => {
   return (
     <section className="relative bg-gradient-to-br from-background via-muted/30 to-background overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative">
         <div className="max-w-4xl mx-auto text-center">
           {/* Logo/Brand */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent flex items-center justify-center gap-2">
+              <img
+                src={`${BASE_URL}logo.svg`}
+                alt="CopiVaga Logo"
+                className="h-8 w-8"
+              />
               CopiVaga
             </h2>
           </div>
@@ -33,13 +39,16 @@ export const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-4 justify-center items-center mb-12">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
-              >
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+              asChild
+            >
+              <a href="#planos">
                 <Zap className="mr-2 h-5 w-5" />
                 Começar Gratuitamente
-              </Button>
+              </a>
+            </Button>
             <p className="text-sm text-muted-foreground text-center">
               Sem cartão de crédito • Setup em 5 minutos
             </p>
