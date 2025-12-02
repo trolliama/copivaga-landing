@@ -1,21 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Check, Star } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { supabase } from "@/integrations/supabase/client";
+import { TrialSignupModal } from "@/components/TrialSignupModal";
 
 const features = [
   "Vagas ilimitadas",
@@ -27,131 +14,13 @@ const features = [
   "Suporte prioritário no whatsapp",
 ];
 
-const trialSchema = z.object({
-  fullName: z
-    .string()
-    .trim()
-    .min(3, { message: "Nome muito curto" })
-    .max(100, { message: "Nome muito longo" })
-    .regex(/^[a-zA-ZÀ-ÿ\s]+$/, { message: "Nome deve conter apenas letras" })
-    .refine((val) => val.split(" ").filter((n) => n.length > 0).length >= 2, {
-      message: "Digite nome e sobrenome completos",
-    }),
-  email: z
-    .string()
-    .trim()
-    .min(1, { message: "Email é obrigatório" })
-    .email({ message: "Digite um email válido" })
-    .max(255, { message: "Email muito longo" })
-    .toLowerCase(),
-  whatsapp: z
-    .string()
-    .trim()
-    .min(1, { message: "WhatsApp é obrigatório" })
-    .transform((val) => val.replace(/\D/g, ""))
-    .refine((val) => val.length >= 10 && val.length <= 11, {
-      message: "Número inválido. Use DDD + 8 ou 9 dígitos",
-    })
-    .refine(
-      (val) => {
-        if (val.length === 11) {
-          return val[2] === "9";
-        }
-        return true;
-      },
-      {
-        message: "Celular deve começar com 9",
-      }
-    ),
-});
-
-type TrialFormData = z.infer<typeof trialSchema>;
-
 export const Pricing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [phoneValue, setPhoneValue] = useState("");
-  const { toast } = useToast();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    setValue,
-  } = useForm<TrialFormData>({
-    resolver: zodResolver(trialSchema),
-  });
-
-  const formatPhoneNumber = (value: string) => {
-    const numbers = value.replace(/\D/g, "");
-
-    if (numbers.length <= 2) {
-      return numbers;
-    }
-    if (numbers.length <= 7) {
-      return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
-    }
-    if (numbers.length <= 11) {
-      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(
-        7
-      )}`;
-    }
-    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(
-      7,
-      11
-    )}`;
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(e.target.value);
-    setPhoneValue(formatted);
-    setValue("whatsapp", e.target.value.replace(/\D/g, ""), {
-      shouldValidate: true,
-    });
-  };
-
-  const onSubmit = async (data: TrialFormData) => {
-    try {
-      const { data: responseData, error } = await supabase.functions.invoke(
-        "submit-trial-signup",
-        {
-          body: {
-            fullName: data.fullName,
-            email: data.email,
-            whatsapp: data.whatsapp,
-          },
-        }
-      );
-
-      if (error) throw error;
-
-      // Store trial_signup_id for quiz
-      if (responseData?.data?.id) {
-        localStorage.setItem("trial_signup_id", responseData.data.id);
-      }
-
-      toast({
-        title: "Cadastro realizado!",
-        description: "Agora vamos conhecer melhor você.",
-      });
-
-      setIsModalOpen(false);
-      reset();
-      setPhoneValue("");
-
-      // Navigate to quiz
-      window.location.href = "/quiz";
-    } catch (error) {
-      console.error("Error submitting trial signup:", error);
-      toast({
-        title: "Erro ao cadastrar",
-        description: "Tente novamente mais tarde.",
-        variant: "destructive",
-      });
-    }
-  };
   return (
-    <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+    <section
+      id="planos"
+      className="py-20 bg-gradient-to-br from-primary/5 via-background to-secondary/5"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-4">
@@ -176,12 +45,12 @@ export const Pricing = () => {
                 <span className="text-2xl font-bold text-muted-foreground line-through">
                   R$ 174
                 </span>
-                <div className="flex items-baseline gap-3">
+                <div className="flex items-baseline">
                   <span className="text-5xl font-bold text-foreground">
                     R$ 87
                   </span>
-                  <span className="text-sm text-muted-foreground mb-2">
-                    /3 meses
+                  <span className="text-sm text-muted-foreground">
+                    / 3 meses
                   </span>
                 </div>
               </div>
@@ -221,72 +90,7 @@ export const Pricing = () => {
         </div>
       </div>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">
-              Comece seu teste grátis
-            </DialogTitle>
-            <DialogDescription>
-              14 dias de acesso completo, sem cartão de crédito
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Nome e Sobrenome</Label>
-              <Input
-                id="fullName"
-                placeholder="João Silva"
-                {...register("fullName")}
-                className={errors.fullName ? "border-destructive" : ""}
-              />
-              {errors.fullName && (
-                <p className="text-sm text-destructive">
-                  {errors.fullName.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="joao@exemplo.com"
-                {...register("email")}
-                className={errors.email ? "border-destructive" : ""}
-              />
-              {errors.email && (
-                <p className="text-sm text-destructive">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="whatsapp">Número do WhatsApp</Label>
-              <Input
-                id="whatsapp"
-                placeholder="(11) 98765-4321"
-                value={phoneValue}
-                onChange={handlePhoneChange}
-                maxLength={15}
-                className={errors.whatsapp ? "border-destructive" : ""}
-              />
-              {errors.whatsapp && (
-                <p className="text-sm text-destructive">
-                  {errors.whatsapp.message}
-                </p>
-              )}
-            </div>
-
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Enviando..." : "Iniciar Teste Grátis"}
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <TrialSignupModal open={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
 };

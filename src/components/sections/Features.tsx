@@ -6,8 +6,10 @@ import {
   Rocket,
   Kanban,
   Check,
+  ArrowRight,
 } from "lucide-react";
 import clsx from "clsx";
+import { Button } from "@/components/ui/button";
 
 const features = [
   {
@@ -32,11 +34,12 @@ const features = [
       "75% dos currículos são barrados por robôs ATS antes do RH ver. Nossa IA identifica e corrige problemas, garantindo aprovação em 95% dos sistemas.",
     bullets: [
       "Nota do seu currículo nos sistemas de seleção automática (ATS)",
+      "+100 Templates customizáveis otimizados para ATS",
       "Veja os principais erros e receba instruções simples de como corrigir",
       "Entenda exatamente como o robô enxerga seu currículo",
       "Baixe uma versão melhorada do seu currículo (PDF e Word)",
     ],
-    image: "https://picsum.photos/seed/ats/640/400",
+    image: "/images/cv-optimization.png",
   },
   {
     icon: Sparkles,
@@ -50,7 +53,7 @@ const features = [
       "Experiências ordenadas por relevância",
       "Pré-visualização e aprovação do currículo",
     ],
-    image: "/images/cv-personalized.png",
+    image: "/images/cv-personalized-v2.png",
   },
   {
     icon: LineChart,
@@ -64,7 +67,7 @@ const features = [
       "Impacto de cada ação em pontos de visibilidade",
       "Análise de foto, headline, sobre, experiências e skills",
     ],
-    image: "https://picsum.photos/seed/linkedin/640/400",
+    image: "/images/linkedin-analytics.png",
   },
   {
     icon: Rocket,
@@ -78,7 +81,7 @@ const features = [
       "Currículo é customizado automaticamente para cada candidatura",
       "Relatório diário das vagas aplicadas e próximos passos",
     ],
-    image: "https://picsum.photos/seed/rocket/640/400",
+    image: "/images/auto-pilot.png",
   },
   {
     icon: Kanban,
@@ -93,7 +96,7 @@ const features = [
       "Métricas de performance para acompanhar seu progresso",
       "Registro automático das candidaturas pela nossa IA",
     ],
-    image: "https://picsum.photos/seed/kanban/640/400",
+    image: "/images/kanban-dashboard.png",
   },
 ];
 
@@ -141,14 +144,28 @@ export const Features = () => {
                       {feature.bullets.map((bullet) => (
                         <li
                           key={bullet}
-                          className="flex items-start gap-3 text-sm text-foreground"
+                          className="flex items-start gap-3 text-base text-foreground"
                         >
                           <Check className="h-4 w-4 text-primary mt-0.5" />
                           <span>{bullet}</span>
                         </li>
                       ))}
                     </ul>
-                    {/* Placeholder: substitua bullets/imagens quando a versão final estiver pronta */}
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-5 border-primary text-primary hover:bg-primary group"
+                      asChild
+                    >
+                      <a
+                        href="#planos"
+                        className="inline-flex items-center gap-2"
+                      >
+                        <span>Teste agora</span>
+                        <ArrowRight className="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+                      </a>
+                    </Button>
                   </div>
 
                   <div

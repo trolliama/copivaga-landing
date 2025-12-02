@@ -42,14 +42,14 @@ export const HowItWorks = () => {
             Como Funciona
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
-              <div key={index} className="relative flex">
+              <div key={step.number} className="relative flex">
                 {/* Connection line */}
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-border -translate-x-1/2" />
                 )}
-
+                
                 <div className="relative bg-card rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-border w-full flex flex-col">
                   {/* Step number badge */}
                   <div className="absolute -top-4 left-6 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">
@@ -77,13 +77,13 @@ export const HowItWorks = () => {
             ))}
           </div>
 
-          <div className="text-center">
+          <div className="mt-12 flex justify-center">
             <Button
-              variant="outline"
               size="lg"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+              asChild
             >
-              Ver Demo Interativa
+              <a href="#planos">Teste grátis agora</a>
             </Button>
           </div>
         </div>

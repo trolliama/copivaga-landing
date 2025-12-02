@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle2, Gift, MessageSquare, Rocket } from "lucide-react";
+import { WhatsAppFloatButton } from "@/components/WhatsAppFloatButton";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,7 +15,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 
@@ -33,7 +33,6 @@ const suggestionSchema = z.object({
 });
 
 const QuizComplete = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmittingWhatsapp, setIsSubmittingWhatsapp] = useState(false);
   const [isSubmittingSuggestion, setIsSubmittingSuggestion] = useState(false);
@@ -46,6 +45,15 @@ const QuizComplete = () => {
       whatsapp: "",
     },
   });
+
+  // Load and pre-fill phone number from localStorage on component mount
+  useEffect(() => {
+    const lastWhatsapp = localStorage.getItem("last_whatsapp_number");
+    if (lastWhatsapp) {
+      whatsappForm.setValue("whatsapp", lastWhatsapp);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const suggestionForm = useForm<z.infer<typeof suggestionSchema>>({
     resolver: zodResolver(suggestionSchema),
@@ -60,8 +68,13 @@ const QuizComplete = () => {
     if (cleaned.length <= 6)
       return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
     if (cleaned.length <= 10)
-      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(6)}`;
-    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7, 11)}`;
+      return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 6)}-${cleaned.slice(
+        6
+      )}`;
+    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(
+      7,
+      11
+    )}`;
   };
 
   const onSubmitWhatsapp = async (values: z.infer<typeof whatsappSchema>) => {
@@ -222,7 +235,7 @@ const QuizComplete = () => {
                   EBOOK EXCLUSIVO
                 </h4>
                 <p className="text-[#111827] font-semibold">
-                  "Currículo Campeão: 10 Estratégias Para Passar no ATS e
+                  "Currículo Campeão: Estratégias Para Passar no ATS e
                   Conquistar Entrevistas"
                 </p>
               </div>
@@ -243,7 +256,7 @@ const QuizComplete = () => {
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-[#10B981]">✓</span>
-                Template profissional pronto pra usar
+                +3 bônus especiais para turbinar sua carreira
               </li>
             </ul>
           </div>
@@ -286,7 +299,9 @@ const QuizComplete = () => {
                   disabled={isSubmittingWhatsapp || whatsappSubmitted}
                   className="w-full bg-[#1E40AF] hover:bg-[#1E3A8A] text-white py-6 text-lg font-semibold rounded-lg"
                 >
-                  {whatsappSubmitted ? "✅ Ebook Solicitado!" : "📱 QUERO RECEBER O EBOOK"}
+                  {whatsappSubmitted
+                    ? "✅ Ebook Solicitado!"
+                    : "📱 QUERO RECEBER O EBOOK"}
                 </Button>
               </form>
             </Form>
@@ -345,7 +360,9 @@ const QuizComplete = () => {
                   disabled={isSubmittingSuggestion || suggestionSubmitted}
                   className="border-2 border-[#1E40AF] text-[#1E40AF] hover:bg-[#3B82F6] hover:text-white font-semibold py-6 px-8"
                 >
-                  {suggestionSubmitted ? "✅ Sugestão Enviada!" : "📝 ENVIAR SUGESTÃO"}
+                  {suggestionSubmitted
+                    ? "✅ Sugestão Enviada!"
+                    : "📝 ENVIAR SUGESTÃO"}
                 </Button>
                 <p className="text-sm text-[#6B7280]">(Opcional)</p>
               </div>
@@ -361,10 +378,12 @@ const QuizComplete = () => {
           <p className="text-[#1E40AF] font-medium">
             Manda um email:{" "}
             <a
-              href="mailto:oi@copivaga.com.br"
+              href={`mailto:${
+                import.meta.env.VITE_EMAIL_SUPPORT || "oi@copivaga.com.br"
+              }`}
               className="underline hover:text-[#1E3A8A]"
             >
-              oi@copivaga.com.br
+              {import.meta.env.VITE_EMAIL_SUPPORT || "oi@copivaga.com.br"}
             </a>
           </p>
           <p className="text-[#111827] font-semibold text-lg pt-4">
@@ -373,6 +392,7 @@ const QuizComplete = () => {
           <p className="text-[#6B7280]">Equipe CopiVaga</p>
         </div>
       </div>
+      <WhatsAppFloatButton />
     </div>
   );
 };

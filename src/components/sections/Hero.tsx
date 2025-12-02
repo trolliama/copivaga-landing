@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, Users, Zap, Play } from "lucide-react";
+import { CheckCircle2, Clock, Users, Zap } from "lucide-react";
 
 export const Hero = () => {
   return (
@@ -33,7 +33,6 @@ export const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-4 justify-center items-center mb-12">
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
@@ -41,15 +40,6 @@ export const Hero = () => {
                 <Zap className="mr-2 h-5 w-5" />
                 Começar Gratuitamente
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="px-8 py-6 text-lg font-semibold"
-              >
-                <Play className="mr-2 h-5 w-5" />
-                Ver Demo
-              </Button>
-            </div>
             <p className="text-sm text-muted-foreground text-center">
               Sem cartão de crédito • Setup em 5 minutos
             </p>

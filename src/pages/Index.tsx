@@ -9,6 +9,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Pricing } from "@/components/sections/Pricing";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { Footer } from "@/components/sections/Footer";
+import { WhatsAppFloatButton } from "@/components/WhatsAppFloatButton";
 
 const Index = () => {
   return (
@@ -18,12 +19,13 @@ const Index = () => {
       <HowItWorks />
       <Features />
       <Benefits />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Comparison />
       <FAQ />
       <Pricing />
       <FinalCTA />
       <Footer />
+      <WhatsAppFloatButton />
     </div>
   );
 };
