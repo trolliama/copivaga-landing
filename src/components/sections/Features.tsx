@@ -54,7 +54,7 @@ const features = [
       "Experiências ordenadas por relevância",
       "Pré-visualização e aprovação do currículo",
     ],
-    image: `${BASE_URL}images/cv-personalized-v2.png`,
+    image: `${BASE_URL}images/cv-personalized-v4.png`,
   },
   {
     icon: LineChart,
@@ -180,7 +180,11 @@ export const Features = () => {
                       <img
                         src={feature.image}
                         alt={`Ilustração sobre ${feature.title}`}
-                        className="h-full w-full object-cover"
+                        className={clsx(
+                          "h-full w-full object-cover",
+                          feature.image.includes("linkedin-analytics") &&
+                            "object-[center_20%] scale-100"
+                        )}
                         loading="lazy"
                       />
                     </div>
