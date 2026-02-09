@@ -12,11 +12,11 @@ export const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Logo/Brand */}
           <div className="mb-8">
-            <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent flex items-center justify-center gap-2">
+            <h2 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent flex items-center justify-center">
               <img
                 src={`${BASE_URL}logo.svg`}
                 alt="CopiVaga Logo"
-                className="h-8 w-8"
+                className="h-12 w-12"
               />
               CopiVaga
             </h2>

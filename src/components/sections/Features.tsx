@@ -7,6 +7,7 @@ import {
   Kanban,
   Check,
   ArrowRight,
+  MessageSquare,
 } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
@@ -99,6 +100,21 @@ const features = [
     ],
     image: `${BASE_URL}images/kanban-dashboard.png`,
   },
+  {
+    icon: MessageSquare,
+    name: "Notificações WhatsApp",
+    title: "Receba Vagas e Atualizações Direto no Seu Celular",
+    summary:
+      "Não perca nenhuma oportunidade! Receba alertas instantâneos no WhatsApp sempre que surgir uma vaga perfeita para você ou quando houver atualizações nas suas candidaturas. Sem precisar ficar abrindo a plataforma toda hora.",
+    bullets: [
+      "Notificações em tempo real de vagas com alta compatibilidade",
+      "Resumo diário das candidaturas enviadas pelo piloto automático",
+      "Alertas de mudanças de status nas suas aplicações",
+      "Lembretes de follow-ups e prazos importantes",
+      "Responda e gerencie candidaturas direto pelo WhatsApp",
+    ],
+    image: `${BASE_URL}images/whatsapp-notifications.jpeg`
+  }
 ];
 
 export const Features = () => {
@@ -183,7 +199,9 @@ export const Features = () => {
                         className={clsx(
                           "h-full w-full object-cover",
                           feature.image.includes("linkedin-analytics") &&
-                            "object-[center_20%] scale-100"
+                            "object-[center_20%] scale-100",
+                          feature.image.includes("whatsapp-notifications") &&
+                            "object-[center_40%]"
                         )}
                         loading="lazy"
                       />

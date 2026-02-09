@@ -6,8 +6,8 @@ export const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent flex items-center gap-2">
-              <img src={`${BASE_URL}logo.svg`} alt="CopiVaga Logo" className="h-8 w-8" />
+            <div className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent flex items-center">
+              <img src={`${BASE_URL}logo.svg`} alt="CopiVaga Logo" className="h-12 w-12" />
               CopiVaga
             </div>
 
