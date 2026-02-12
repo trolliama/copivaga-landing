@@ -379,11 +379,11 @@ const QuizComplete = () => {
             Manda um email:{" "}
             <a
               href={`mailto:${
-                import.meta.env.VITE_EMAIL_SUPPORT || "oi@copivaga.com.br"
+                import.meta.env.VITE_EMAIL_SUPPORT || "suporte@copivaga.com.br"
               }`}
               className="underline hover:text-[#1E3A8A]"
             >
-              {import.meta.env.VITE_EMAIL_SUPPORT || "oi@copivaga.com.br"}
+              {import.meta.env.VITE_EMAIL_SUPPORT || "suporte@copivaga.com.br"}
             </a>
           </p>
           <p className="text-[#111827] font-semibold text-lg pt-4">
