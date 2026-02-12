@@ -20,7 +20,7 @@ export const Footer = () => {
           </div>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            © 2025 CopiVaga. Todos os direitos reservados.
+            © 2026 CopiVaga. Todos os direitos reservados.
           </div>
         </div>
       </div>
