@@ -12,10 +12,10 @@ export const Footer = () => {
             </div>
 
             <a
-              href="mailto:contato@copivaga.com"
+              href={`mailto:${import.meta.env.VITE_EMAIL_SUPPORT || "contato@copivaga.com"}`}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              📧 contato@copivaga.com
+              📧 {import.meta.env.VITE_EMAIL_SUPPORT || "contato@copivaga.com"}
             </a>
           </div>
 
