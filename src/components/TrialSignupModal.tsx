@@ -33,11 +33,34 @@ const trialSchema = z.object({
     .email({ message: "Digite um email válido" })
     .max(255, { message: "Email muito longo" })
     .toLowerCase(),
+  birthDate: z
+    .string()
+    .min(1, { message: "Data de nascimento é obrigatória" })
+    .regex(/^\d{2}\/\d{2}\/\d{4}$/, { message: "Use o formato dd/mm/aaaa" })
+    .refine((val) => {
+      const [day, month, year] = val.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+      return !Number.isNaN(date.getTime()) && 
+             date.getDate() === day && 
+             date.getMonth() === month - 1 && 
+             date.getFullYear() === year;
+    }, { message: "Data inválida" })
+    .refine((val) => {
+      const [day, month, year] = val.split('/').map(Number);
+      const birthDate = new Date(year, month - 1, day);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age >= 16 && age <= 100;
+    }, { message: "Você deve ter entre 16 e 100 anos" }),
   whatsapp: z
     .string()
     .trim()
     .min(1, { message: "WhatsApp é obrigatório" })
-    .transform((val) => val.replace(/\D/g, ""))
+    .transform((val) => val.replaceAll(/\D/g, ""))
     .refine((val) => val.length >= 10 && val.length <= 11, {
       message: "Número inválido. Use DDD + 8 ou 9 dígitos",
     })
@@ -67,6 +90,7 @@ export const TrialSignupModal = ({
 }: TrialSignupModalProps) => {
   const navigate = useNavigate();
   const [phoneValue, setPhoneValue] = useState("");
+  const [birthDateValue, setBirthDateValue] = useState("");
   const { toast } = useToast();
 
   const {
@@ -80,7 +104,7 @@ export const TrialSignupModal = ({
   });
 
   const formatPhoneNumber = (value: string) => {
-    const numbers = value.replace(/\D/g, "");
+    const numbers = value.replaceAll(/\D/g, "");
 
     if (numbers.length <= 2) {
       return numbers;
@@ -99,22 +123,47 @@ export const TrialSignupModal = ({
     )}`;
   };
 
+  const formatBirthDate = (value: string) => {
+    const numbers = value.replaceAll(/\D/g, "");
+
+    if (numbers.length <= 2) {
+      return numbers;
+    }
+    if (numbers.length <= 4) {
+      return `${numbers.slice(0, 2)}/${numbers.slice(2)}`;
+    }
+    return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`;
+  };
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
     setPhoneValue(formatted);
-    setValue("whatsapp", e.target.value.replace(/\D/g, ""), {
+    setValue("whatsapp", e.target.value.replaceAll(/\D/g, ""), {
+      shouldValidate: true,
+    });
+  };
+
+  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatBirthDate(e.target.value);
+    setBirthDateValue(formatted);
+    setValue("birthDate", formatted, {
       shouldValidate: true,
     });
   };
 
   const onSubmit = async (data: TrialFormData) => {
     try {
+      // Convert dd/mm/yyyy to yyyy-mm-dd for database
+      const [day, month, year] = data.birthDate.split('/');
+      const birthDateISO = `${year}-${month}-${day}`;
+
       const { data: responseData, error } = await supabase.functions.invoke(
         "submit-trial-signup",
         {
           body: {
             fullName: data.fullName,
             email: data.email,
+            birthDate: birthDateISO,
             whatsapp: data.whatsapp,
           },
         }
@@ -138,6 +187,7 @@ export const TrialSignupModal = ({
       onOpenChange(false);
       reset();
       setPhoneValue("");
+      setBirthDateValue("");
 
       // Navigate to quiz
       navigate("/quiz");
@@ -190,6 +240,24 @@ export const TrialSignupModal = ({
             />
             {errors.email && (
               <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="birthDate">Data de Nascimento</Label>
+            <Input
+              id="birthDate"
+              type="text"
+              placeholder="dd/mm/aaaa"
+              value={birthDateValue}
+              onChange={handleBirthDateChange}
+              maxLength={10}
+              className={errors.birthDate ? "border-destructive" : ""}
+            />
+            {errors.birthDate && (
+              <p className="text-sm text-destructive">
+                {errors.birthDate.message}
+              </p>
             )}
           </div>
 

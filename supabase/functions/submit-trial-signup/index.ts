@@ -9,6 +9,7 @@ const corsHeaders = {
 interface TrialSignupData {
   fullName: string;
   email: string;
+  birthDate: string;
   whatsapp: string;
 }
 
@@ -21,7 +22,7 @@ Deno.serve(async (req) => {
   try {
     console.log("Processing trial signup request");
 
-    const { fullName, email, whatsapp }: TrialSignupData = await req.json();
+    const { fullName, email, birthDate, whatsapp }: TrialSignupData = await req.json();
 
     // Validate input
     if (
@@ -45,6 +46,48 @@ Deno.serve(async (req) => {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // Validate birth date
+    if (!birthDate) {
+      console.error("Missing birthDate");
+      return new Response(
+        JSON.stringify({ error: "Data de nascimento é obrigatória" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const birthDateObj = new Date(birthDate);
+    if (Number.isNaN(birthDateObj.getTime())) {
+      console.error("Invalid birthDate:", birthDate);
+      return new Response(
+        JSON.stringify({ error: "Data de nascimento inválida" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    // Validate age (between 16 and 100 years)
+    const today = new Date();
+    const age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    const dayDiff = today.getDate() - birthDateObj.getDate();
+    const actualAge = monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
+
+    if (actualAge < 16 || actualAge > 100) {
+      console.error("Invalid age:", actualAge);
+      return new Response(
+        JSON.stringify({ error: "Você deve ter entre 16 e 100 anos" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
 
     if (
@@ -73,6 +116,7 @@ Deno.serve(async (req) => {
       .insert({
         full_name: fullName.trim(),
         email: email.trim().toLowerCase(),
+        birth_date: birthDate,
         whatsapp: whatsapp.trim(),
       })
       .select()

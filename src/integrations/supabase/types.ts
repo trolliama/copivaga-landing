@@ -51,6 +51,7 @@ export type Database = {
       }
       trial_signups: {
         Row: {
+          birth_date: string | null
           created_at: string
           email: string
           full_name: string
@@ -58,6 +59,7 @@ export type Database = {
           whatsapp: string
         }
         Insert: {
+          birth_date?: string | null
           created_at?: string
           email: string
           full_name: string
@@ -65,6 +67,7 @@ export type Database = {
           whatsapp: string
         }
         Update: {
+          birth_date?: string | null
           created_at?: string
           email?: string
           full_name?: string
